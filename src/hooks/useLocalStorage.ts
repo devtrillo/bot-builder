@@ -22,7 +22,7 @@ function useLocalStorage<T>(key: string, initialValue: T) {
   // ... persists the new value to localStorage.
   const setValue = (value: T | ((val: T) => T)) => {
     try {
-      // Allow value to be a function so we have same API as useState
+      // Allow value to be a function, so we have same API as useState
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;
       // Save state
@@ -38,5 +38,4 @@ function useLocalStorage<T>(key: string, initialValue: T) {
   };
   return [storedValue, setValue] as const;
 }
-
 export default useLocalStorage;
