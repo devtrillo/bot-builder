@@ -1,16 +1,11 @@
-import { Layout } from "antd";
-
-import Header from "@/components/Header";
-
-const { Content } = Layout;
-
-function HomeScreen() {
+const Home = () => {
   return (
-    <Layout>
-      <Header />
-      <Content></Content>
-    </Layout>
+    <div>
+      <h1 className="dark:bg-gray-700 bg-gray-300 text-center">
+        Bienvenido a tu calculadora
+      </h1>
+    </div>
   );
-}
+};
 
-export default HomeScreen;
+export default Home;
