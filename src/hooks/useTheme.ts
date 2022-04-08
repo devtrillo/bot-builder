@@ -9,7 +9,7 @@ const getTheme = () =>
     ? "dark"
     : "light";
 
-type UseTheme = [string, (theme: string) => void];
+type UseTheme = [string, () => void];
 export default function useTheme(): UseTheme {
   const [theme, setTheme] = useLocalStorage("theme", getTheme());
 
