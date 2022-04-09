@@ -1,23 +1,18 @@
 import cx from "classnames";
-import { motion, useReducedMotion } from "framer-motion";
 import type { FC } from "react";
 export type CardProps = {
   className?: string;
   horizontal?: boolean;
   imgSrc?: string;
-  animate?: boolean;
 };
 export const Card: FC<CardProps> = ({
   children,
   className,
   horizontal,
   imgSrc,
-  animate = false,
 }) => {
-  const reducedMotion = useReducedMotion();
   return (
-    <motion.div
-      animate={{ opacity: 1, scale: 1 }}
+    <div
       className={cx(
         "flex rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 overflow-hidden",
         {
@@ -26,7 +21,6 @@ export const Card: FC<CardProps> = ({
         },
         className
       )}
-      initial={!reducedMotion && animate ? { opacity: 0, scale: 0 } : false}
     >
       {imgSrc ? (
         <img
@@ -43,6 +37,6 @@ export const Card: FC<CardProps> = ({
       <div className="flex h-full flex-col justify-center gap-4 p-6">
         {children}
       </div>
-    </motion.div>
+    </div>
   );
 };
