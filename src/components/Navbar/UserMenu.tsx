@@ -48,6 +48,7 @@ const UserMenu = () => {
         aria-expanded="false"
         className="mr-3 flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 md:mr-0"
         data-dropdown-toggle="dropdown"
+        tabIndex={0}
         type="button"
         onClick={openMenu}
       >
@@ -88,6 +89,7 @@ const UserMenu = () => {
             <li key={href}>
               <Link
                 className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                tabIndex={openUser ? 1 : -1}
                 to={href}
               >
                 {text}
