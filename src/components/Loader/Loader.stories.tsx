@@ -1,8 +1,10 @@
 import Loader from "./Loader";
 
-export default {
+const defaultConfig = {
   component: Loader,
   title: "components/Loader",
 };
 
-export const HomePage = () => <Loader />;
+export const Default = () => <Loader />;
+
+export default defaultConfig;

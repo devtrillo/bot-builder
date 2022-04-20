@@ -2,14 +2,16 @@ import cx from "classnames";
 import { ComponentProps, FC, ReactNode } from "react";
 import { HiX } from "react-icons/hi";
 
-export type AlertProps = {
+import { WithChildren } from "@/utils/withChildren";
+
+export type AlertProps = WithChildren<{
   color?: "blue" | "red" | "green" | "yellow" | "gray";
   Icon?: FC<ComponentProps<"svg">>;
   rounded?: boolean;
   withBorderAccent?: boolean;
   additionalContent?: ReactNode;
-  onDismiss?: () => void;
-};
+  onDismiss?: null | (() => void);
+}>;
 
 const colorClasses: Record<AlertProps["color"] & string, string> = {
   blue: "text-blue-700 bg-blue-100 border-blue-500 dark:bg-blue-200 dark:text-blue-800",
@@ -21,7 +23,7 @@ const colorClasses: Record<AlertProps["color"] & string, string> = {
     "text-yellow-700 bg-yellow-100 border-yellow-500 dark:bg-yellow-200 dark:text-yellow-800",
 };
 
-export const Alert: FC<AlertProps> = ({
+export const Alert = ({
   children,
   color = "blue",
   Icon,
@@ -29,7 +31,7 @@ export const Alert: FC<AlertProps> = ({
   withBorderAccent,
   additionalContent,
   onDismiss,
-}) => {
+}: AlertProps) => {
   return (
     <div
       className={cx("flex flex-col gap-2 p-4 text-sm", colorClasses[color], {

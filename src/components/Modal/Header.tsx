@@ -1,10 +1,11 @@
 import cx from "classnames";
-import { FC } from "react";
 import { HiOutlineX } from "react-icons/hi";
+
+import { WithChildren } from "@/utils/withChildren";
 
 import { useModalContext } from "./Context";
 
-export const ModalHeader: FC = ({ children }) => {
+export const ModalHeader = ({ children }: WithChildren<{}>) => {
   const { popup, onClose } = useModalContext();
 
   return (
