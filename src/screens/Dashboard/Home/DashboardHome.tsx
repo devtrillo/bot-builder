@@ -38,7 +38,7 @@ function DashboardHome() {
   useEffect(() => {
     if (botSnapshot?.docs)
       setFilteredBots(
-        botSnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        botSnapshot.docs.map((doc) => ({ ...(doc.data() as Bot), id: doc.id }))
       );
   }, [botSnapshot]);
   const cardVariants = useVariants({

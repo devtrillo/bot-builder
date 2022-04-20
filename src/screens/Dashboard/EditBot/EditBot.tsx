@@ -1,13 +1,13 @@
 import "./style.css";
 
-import { MouseEvent, useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import ReactFlow, {
   addEdge,
   Background,
   Connection,
   Controls,
-  Edge,
   MiniMap,
+  NodeTypes,
   useEdgesState,
   useNodesState,
 } from "react-flow-renderer";
@@ -18,8 +18,8 @@ import { useBot } from "@/hooks/useBot";
 
 import { edges as initialEdges, nodes as initialNodes } from "./intialNodes";
 
-const edgeTypes = {
-  customEdge: CustomEdge,
+const edgeTypes: NodeTypes = {
+  customEdge: CustomEdge as unknown as ReactNode,
 };
 
 function EditBot() {
@@ -27,6 +27,7 @@ function EditBot() {
   const [botData] = useBot(botId as string);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
   useEffect(() => {
     setEdges(
       initialEdges.map((edge) => {
@@ -42,25 +43,7 @@ function EditBot() {
         return node;
       })
     );
-  }, []);
-  useEffect(() => {
-    const reset = (e) => {
-      console.log(e.key);
-      if (e.key === "Escape") {
-        setNodes([]);
-        setEdges([]);
-      }
-    };
-    window.addEventListener("keydown", reset);
-    return () => {
-      window.removeEventListener("keydown", reset);
-    };
   }, [setEdges, setNodes]);
-
-  const removeEdge = (e: MouseEvent, edge: Edge) => {
-    e?.preventDefault();
-    setEdges((edges) => edges.filter((ed) => ed.id !== edge.id));
-  };
 
   const onConnect = (params: Connection) => {
     setEdges((eds) => addEdge({ ...params, type: "customEdge" }, eds));

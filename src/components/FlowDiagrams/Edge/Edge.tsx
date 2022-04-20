@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import { CSSProperties, MouseEvent } from "react";
 import { getBezierPath, getEdgeCenter, Position } from "react-flow-renderer";
 
 import useIsReactFlowLocked from "@/hooks/useIsReactFlowLocked";
@@ -16,6 +16,7 @@ export type ButtonEdgeProps = {
   targetPosition: Position;
   style: CSSProperties;
   markerEnd: string;
+  onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 export function CustomEdge({
   id,

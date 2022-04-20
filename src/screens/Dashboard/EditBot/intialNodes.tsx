@@ -95,7 +95,6 @@ export const edges: Edge[] = [
     target: "5",
   },
   {
-    custom: "prop",
     id: "e5-6",
     label: "smooth step edge",
     source: "5",
