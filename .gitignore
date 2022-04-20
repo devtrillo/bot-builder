@@ -26,3 +26,4 @@ dist-ssr
 .husky/post-checkout
 .husky/post-commit
 storybook-static
+.firebase
