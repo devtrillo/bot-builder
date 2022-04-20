@@ -1,8 +1,16 @@
+import CustomMDXDocumentation from "./docs.mdx";
 import Loader from "./Loader";
 
-export default {
+const defaultConfig = {
   component: Loader,
+  parameters: {
+    docs: {
+      page: CustomMDXDocumentation,
+    },
+  },
   title: "components/Loader",
 };
 
-export const HomePage = () => <Loader />;
+export const Default = () => <Loader />;
+
+export default defaultConfig;

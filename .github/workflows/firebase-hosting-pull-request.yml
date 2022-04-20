@@ -15,10 +15,15 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install --frozen-lockfile
         name: Install dependencies
-      - run: yarn build
+      - run: yarn build && yarn build-storybook
         name: Build the app
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_PLAYGROUND_DEVTRILLO }}"
           projectId: playground-devtrillo
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_PLAYGROUND_DEVTRILLO }}"
+          projectId: docs-devtrillo
