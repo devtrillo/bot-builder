@@ -1,19 +1,20 @@
 import cx from "classnames";
 import { motion, useReducedMotion } from "framer-motion";
-import type { FC } from "react";
-export type CardProps = {
+
+import { WithChildren } from "@/utils/withChildren";
+export type CardProps = WithChildren<{
   className?: string;
   horizontal?: boolean;
   imgSrc?: string;
   animate?: boolean;
-};
-export const Card: FC<CardProps> = ({
+}>;
+export const Card = ({
   children,
   className,
   horizontal,
   imgSrc,
   animate = false,
-}) => {
+}: CardProps) => {
   const reducedMotion = useReducedMotion();
   return (
     <motion.div

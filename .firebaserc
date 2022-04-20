@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "playground-devtrillo"
+  },
+  "targets": {
+    "playground-devtrillo": {
+      "hosting": {
+        "docs": [
+          "docs-devtrillo"
+        ],
+        "main": [
+          "playground-devtrillo"
+        ]
+      }
+    }
   }
 }

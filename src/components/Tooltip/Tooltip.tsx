@@ -1,8 +1,10 @@
 import { createPopper, Instance, Placement } from "@popperjs/core";
 import classNames from "classnames";
-import { FC, ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
-export type TooltipProps = {
+import { WithChildren } from "@/utils/withChildren";
+
+export type TooltipProps = WithChildren<{
   className?: string;
   content: ReactNode;
   placement?: Placement;
@@ -10,9 +12,9 @@ export type TooltipProps = {
   style?: "dark" | "light" | "auto";
   animation?: false | `duration-${number}`;
   arrow?: boolean;
-};
+}>;
 
-export const Tooltip: FC<TooltipProps> = ({
+export const Tooltip = ({
   children,
   className,
   content,
@@ -21,7 +23,7 @@ export const Tooltip: FC<TooltipProps> = ({
   style = "dark",
   animation = "duration-300",
   arrow = true,
-}) => {
+}: TooltipProps) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLSpanElement>(null);
   const popperInstance = useRef<Instance>();

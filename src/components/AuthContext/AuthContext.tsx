@@ -1,7 +1,8 @@
-import { createContext, FC, useContext } from "react";
+import { createContext, useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { auth } from "@/utils/firebase";
+import { WithChildren } from "@/utils/withChildren";
 
 export type IAuthContext = {
   email?: string | null;
@@ -10,7 +11,7 @@ export type IAuthContext = {
 };
 const AuthContext = createContext<IAuthContext>({});
 
-const AuthContextProvider: FC = ({ children }) => {
+const AuthContextProvider = ({ children }: WithChildren<{}>) => {
   const [user, loading] = useAuthState(auth);
   if (loading) return <div>Loading</div>;
   return (

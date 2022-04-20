@@ -17,7 +17,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - run: yarn build
+      - run: yarn build && yarn build-storybook
         name: Build the app
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
