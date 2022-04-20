@@ -1,5 +1,7 @@
-import React, { CSSProperties, MouseEventHandler } from "react";
+import React, { CSSProperties } from "react";
 import { getBezierPath, getEdgeCenter, Position } from "react-flow-renderer";
+
+import useIsReactFlowLocked from "@/hooks/useIsReactFlowLocked";
 
 import edgeStyle from "./edge.module.css";
 const foreignObjectSize = 40;
@@ -14,9 +16,8 @@ export type ButtonEdgeProps = {
   targetPosition: Position;
   style: CSSProperties;
   markerEnd: string;
-  onClick: MouseEventHandler<HTMLButtonElement>;
 };
-export function ButtonEdge({
+export function CustomEdge({
   id,
   sourceX,
   sourceY,
@@ -27,7 +28,11 @@ export function ButtonEdge({
   style = {},
   markerEnd,
   onClick,
+  ...rest
 }: ButtonEdgeProps) {
+  console.log(rest);
+  const isLocked = useIsReactFlowLocked();
+
   const edgePath = getBezierPath({
     sourcePosition,
     sourceX,
@@ -60,11 +65,13 @@ export function ButtonEdge({
         x={edgeCenterX - foreignObjectSize / 2}
         y={edgeCenterY - foreignObjectSize / 2}
       >
-        <div>
-          <button className={edgeStyle.edgebutton} onClick={onClick}>
-            ×
-          </button>
-        </div>
+        {!isLocked ? (
+          <div>
+            <button className={edgeStyle.edgebutton} onClick={onClick}>
+              ×
+            </button>
+          </div>
+        ) : null}
       </foreignObject>
     </>
   );

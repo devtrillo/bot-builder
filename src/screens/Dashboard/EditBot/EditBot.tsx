@@ -1,9 +1,10 @@
 import "./style.css";
 
-import { doc } from "firebase/firestore";
-import { useDocumentData } from "react-firebase-hooks/firestore";
+import { MouseEvent, useEffect } from "react";
 import ReactFlow, {
+  addEdge,
   Background,
+  Connection,
   Controls,
   Edge,
   MiniMap,
@@ -12,47 +13,75 @@ import ReactFlow, {
 } from "react-flow-renderer";
 import { useParams } from "react-router-dom";
 
-import { firestore } from "@/utils/firebase";
+import { CustomEdge } from "@/components/FlowDiagrams";
+import { useBot } from "@/hooks/useBot";
 
 import { edges as initialEdges, nodes as initialNodes } from "./intialNodes";
-type BotData =
-  | {
-      description: string;
-      edges: Edge[];
-      name: string;
-      nodes: Node[];
-    }
-  | undefined;
 
-const useBot = (id: string): [BotData, boolean] => {
-  const botRef = doc(firestore, `bots/${id}`);
-  const [docData, loading] = useDocumentData(botRef);
-  return [docData as BotData, loading];
+const edgeTypes = {
+  customEdge: CustomEdge,
 };
 
 function EditBot() {
   const { botId } = useParams();
   const [botData] = useBot(botId as string);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  useEffect(() => {
+    setEdges(
+      initialEdges.map((edge) => {
+        if (edge.type === "customEdge")
+          return { ...edge, data: { onClick: console.warn } };
+        return edge;
+      })
+    );
+    setNodes(
+      initialNodes.map((node) => {
+        if (node.type === "customNode")
+          return { ...node, data: { hello: "world" } };
+        return node;
+      })
+    );
+  }, []);
+  useEffect(() => {
+    const reset = (e) => {
+      console.log(e.key);
+      if (e.key === "Escape") {
+        setNodes([]);
+        setEdges([]);
+      }
+    };
+    window.addEventListener("keydown", reset);
+    return () => {
+      window.removeEventListener("keydown", reset);
+    };
+  }, [setEdges, setNodes]);
+
+  const removeEdge = (e: MouseEvent, edge: Edge) => {
+    e?.preventDefault();
+    setEdges((edges) => edges.filter((ed) => ed.id !== edge.id));
+  };
+
+  const onConnect = (params: Connection) => {
+    setEdges((eds) => addEdge({ ...params, type: "customEdge" }, eds));
+  };
 
   return (
-    <div className="w-full h-full cursor-not-allowed">
+    <div className="w-full h-full ">
       <h1>Edit Bot: {botData?.name}</h1>
       <ReactFlow
         fitView
         attributionPosition="top-right"
         edges={edges}
+        edgeTypes={edgeTypes}
         nodes={nodes}
+        onConnect={onConnect}
+        onEdgesChange={onEdgesChange}
+        onNodesChange={onNodesChange}
       >
         <Background />
-        <Controls
-          onInteractiveChange={(interactive) => {
-            console.log(interactive);
-          }}
-        />
+        <Controls />
         <MiniMap
-          className="bg-green-500"
           nodeBorderRadius={2}
           nodeColor={(n): string => {
             if (n.style?.background) return n.style.background as string;

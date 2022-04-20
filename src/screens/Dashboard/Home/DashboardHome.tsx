@@ -2,6 +2,7 @@ import cx from "classnames";
 import { collection, FieldValue, query, where } from "firebase/firestore";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { Link } from "react-router-dom";
@@ -25,12 +26,21 @@ export interface Bot {
 function DashboardHome() {
   const [user] = useAuthState(auth);
 
+  const [filter, setFilter] = useState("");
+  const [filteredBots, setFilteredBots] = useState<Bot[]>([]);
+
   const q = query(
     collection(firestore, "bots"),
     where("user", "==", user?.uid ?? "")
   );
   const [botSnapshot, loading] = useCollection(q);
 
+  useEffect(() => {
+    if (botSnapshot?.docs)
+      setFilteredBots(
+        botSnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+  }, [botSnapshot]);
   const cardVariants = useVariants({
     exit: { opacity: 0, transition: { duration: 0.2 } },
     hidden: { opacity: 0 },
