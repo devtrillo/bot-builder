@@ -6,7 +6,6 @@ import { Alert } from "./Alert";
 const defaultConfig = {
   args: {
     children: "This is a default alert",
-    onDismiss: null,
   },
   component: Alert,
   title: "components/Alert",
@@ -20,16 +19,24 @@ const Template: ComponentStory<typeof Alert> = (args) => {
 export const GreenAlert = Template.bind({});
 export const DismissableAlert = Template.bind({});
 export const RoundedAlert = Template.bind({});
+export const ClosableAlert = Template.bind({});
 
 GreenAlert.args = {
   color: "green",
+  onDismiss: null,
+};
+ClosableAlert.args = {
+  color: "yellow",
+  onDismiss: undefined,
 };
 
 DismissableAlert.args = {
   Icon: AiFillAlert,
 };
+
 RoundedAlert.args = {
   color: "gray",
+  onDismiss: null,
   rounded: true,
 };
 

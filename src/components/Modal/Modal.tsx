@@ -1,5 +1,6 @@
 import cx from "classnames";
-import { FC } from "react";
+
+import { WithChildren } from "@/utils/withChildren";
 
 import { ModalContext } from "./Context";
 
@@ -51,14 +52,14 @@ const placementClasses: Record<Placement, string> = {
   "top-right": "items-start justify-end",
 };
 
-export const Modal: FC<ModalProps> = ({
+export const Modal = ({
   children,
   show,
   popup,
   size = "2xl",
   placement = "center",
   onClose,
-}) => (
+}: WithChildren<ModalProps>) => (
   <ModalContext.Provider value={{ onClose, popup }}>
     <div
       aria-hidden={!show}
