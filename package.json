@@ -12,9 +12,11 @@
     "release:major": "standard-version --release-as major",
     "release:minor": "standard-version --release-as minor",
     "release:patch": "standard-version --release-as patch",
-    "storybook": "start-storybook -p 6006"
+    "storybook": "start-storybook -p 6006",
+    "update:changelog": "node scripts/updateChangelog.js"
   },
   "lint-staged": {
+    "CHANGELOG.md": "npm run update:changelog",
     "package.json": "npx sort-package-json",
     "*.{ts,tsx,js,jsx,css,md}": "prettier --write",
     "*.{ts,tsx,js,jsx}": [

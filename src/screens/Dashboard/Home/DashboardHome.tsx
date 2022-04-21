@@ -2,13 +2,14 @@ import cx from "classnames";
 import { collection, FieldValue, query, where } from "firebase/firestore";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { Link } from "react-router-dom";
 
 import { Card } from "@/components/Card";
 import CreateBotModal from "@/components/CreateBotModal/CreateBotModal";
+import { TextInput } from "@/components/FormControls";
 import { useVariants } from "@/hooks/useVariants";
 import { auth, firestore } from "@/utils/firebase";
 
@@ -27,13 +28,25 @@ function DashboardHome() {
   const [user] = useAuthState(auth);
 
   const [filter, setFilter] = useState("");
-  const [filteredBots, setFilteredBots] = useState<Bot[]>([]);
+  const [, setFilteredBots] = useState<Bot[]>([]);
 
   const q = query(
     collection(firestore, "bots"),
     where("user", "==", user?.uid ?? "")
   );
   const [botSnapshot, loading] = useCollection(q);
+  const filteredBots = useMemo(
+    () =>
+      botSnapshot?.docs
+        .filter((doc) => {
+          const data = Object.values({ ...doc.data(), id: doc.id })
+            .join("|")
+            .toLowerCase();
+          return data.includes(filter.toLowerCase());
+        })
+        .map((doc) => ({ ...doc.data(), id: doc.id } as Bot)) ?? [],
+    [filter, botSnapshot?.docs]
+  );
 
   useEffect(() => {
     if (botSnapshot?.docs)
@@ -42,7 +55,10 @@ function DashboardHome() {
       );
   }, [botSnapshot]);
   const cardVariants = useVariants({
-    exit: { opacity: 0, transition: { duration: 0.2 } },
+    exit: (i: number) => {
+      console.log(i);
+      return { opacity: 0, transition: { duration: 0.2 } };
+    },
     hidden: { opacity: 0 },
     visible: (i: number) => ({
       opacity: 1,
@@ -50,15 +66,24 @@ function DashboardHome() {
     }),
   });
   const containerVariants = useVariants({
+    exit: { opacity: 0, width: 0 },
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
   });
+
+  const onChangeFilter = (e: ChangeEvent<HTMLInputElement>) => {
+    setFilter(e.target.value);
+  };
 
   return (
     <>
       <div className="relative">
         <h1>Dashboard Home</h1>
-
+        <TextInput
+          placeholder="Bot filter"
+          value={filter}
+          onChange={onChangeFilter}
+        />
         <AnimatePresence>
           {loading ? (
             <motion.div
@@ -84,13 +109,12 @@ function DashboardHome() {
             <motion.section
               animate="visible"
               className={cx("mt-10 gap-3", style.container)}
-              exit="hidden"
+              exit="exit"
               initial="hidden"
               variants={containerVariants}
             >
-              {botSnapshot?.docs.map((doc, index) => {
-                const { name, description } = doc.data();
-                const id = doc.id;
+              {filteredBots.map((doc, index) => {
+                const { name, description, id } = doc;
                 return (
                   <motion.div key={name} custom={index} variants={cardVariants}>
                     <Link to={`/dashboard/${id}`}>
