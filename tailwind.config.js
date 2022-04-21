@@ -3,6 +3,10 @@ module.exports = {
   darkMode: "class",
   plugins: [],
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        half: "50%",
+      },
+    },
   },
 };

@@ -1,0 +1,6 @@
+.react-flow__minimap {
+  @apply bg-green-900 dark:bg-gray-700 !important;
+}
+.react-flow__attribution {
+  display: none;
+}
