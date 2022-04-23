@@ -8,4 +8,5 @@ const useToggle = (initialState: boolean = false): [boolean, any] => {
   const toggle = useCallback((): void => setState((state) => !state), []);
   return [state, toggle];
 };
+
 export default useToggle;
