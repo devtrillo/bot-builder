@@ -27,3 +27,4 @@ dist-ssr
 .husky/post-commit
 storybook-static
 .firebase
+coverage
