@@ -1,5 +1,3 @@
 // Vitest Snapshot v1
 
-exports[`add 1`] = `"Bot builder"`;
-
-exports[`should not change any of the variables 1`] = `"Bot builder"`;
+exports[`The variable PRODUCT_NAME should not change 1`] = `"Bot builder"`;

@@ -1,8 +1,13 @@
 export const PRODUCT_NAME = "Bot builder";
 
 if (import.meta.vitest) {
-  const { it, expect } = import.meta.vitest;
-  it("should not change any of the variables", () => {
-    expect(PRODUCT_NAME).toMatchSnapshot();
-  });
+  const { test, expect } = import.meta.vitest;
+
+  test.each([["PRODUCT_NAME", PRODUCT_NAME]])(
+    "The variable %s should not change",
+    (name, value) => {
+      expect(typeof name).toBe("string");
+      expect(value).toMatchSnapshot();
+    }
+  );
 }
