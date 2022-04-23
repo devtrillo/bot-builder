@@ -14,9 +14,7 @@ const firebaseConfig = {
   storageBucket: "playground-devtrillo.appspot.com",
 };
 
-if (getApps().length === 0) {
-  initializeApp(firebaseConfig);
-}
+if (getApps().length === 0) initializeApp(firebaseConfig);
 
 export const auth = getAuth();
 export const googleAuthProvider = new GoogleAuthProvider();
